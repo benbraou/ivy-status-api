@@ -11,7 +11,7 @@ import (
 
 // GranularStatusBuilder tests
 func TestGranularStatusBuilder(t *testing.T) {
-	builder := newGranularStatusBuilder()
+	builder := NewGranularStatusBuilder()
 	status := builder.
 		Code("IMPLEMENTED").
 		Category("Spec").
@@ -33,10 +33,10 @@ func TestGranularStatusBuilder(t *testing.T) {
 
 // FeatureStatusBuilder tests
 func TestFeatureStatusBuilderNotCompleteFeature(t *testing.T) {
-	builder := newFeatureStatusBuilder()
+	builder := NewFeatureStatusBuilder()
 	featureStatus := builder.
 		AddGranularStatus(
-			newGranularStatusBuilder().
+			NewGranularStatusBuilder().
 				Code("NOT_IMPLEMENTED").
 				Category("Spec").
 				Description("extra description").
@@ -53,7 +53,7 @@ func TestFeatureStatusBuilderNotCompleteFeature(t *testing.T) {
 			len(featureStatus.GranularStatuses))
 	}
 
-	if !reflect.DeepEqual(featureStatus.GranularStatuses[0], newGranularStatusBuilder().
+	if !reflect.DeepEqual(featureStatus.GranularStatuses[0], NewGranularStatusBuilder().
 		Code("NOT_IMPLEMENTED").
 		Category("Spec").
 		Description("extra description").
@@ -63,17 +63,17 @@ func TestFeatureStatusBuilderNotCompleteFeature(t *testing.T) {
 }
 
 func TestFeatureStatusBuilderCompleteFeature(t *testing.T) {
-	builder := newFeatureStatusBuilder()
+	builder := NewFeatureStatusBuilder()
 	featureStatus := builder.
 		AddGranularStatus(
-			newGranularStatusBuilder().
+			NewGranularStatusBuilder().
 				Code("IMPLEMENTED").
 				Category("Spec").
 				Description("extra description").
 				Build(),
 		).
 		AddGranularStatus(
-			newGranularStatusBuilder().
+			NewGranularStatusBuilder().
 				Code("IMPLEMENTED").
 				Category("Complier").
 				Description("extra description").
@@ -93,12 +93,12 @@ func TestFeatureStatusBuilderCompleteFeature(t *testing.T) {
 
 // FeatureBuilder tests
 func TestFeatureBuilder(t *testing.T) {
-	builder := newFeatureBuilder()
+	builder := NewFeatureBuilder()
 	feature := builder.
 		Name("defineDirective()").
 		Status(
-			newFeatureStatusBuilder().AddGranularStatus(
-				newGranularStatusBuilder().
+			NewFeatureStatusBuilder().AddGranularStatus(
+				NewGranularStatusBuilder().
 					Code("IMPLEMENTED").
 					Category("Spec").
 					Description("extra description").
@@ -110,8 +110,8 @@ func TestFeatureBuilder(t *testing.T) {
 		t.Error("Expected feature name: defineDirective(), got ", feature.Name)
 	}
 
-	if !reflect.DeepEqual(feature.Status, newFeatureStatusBuilder().AddGranularStatus(
-		newGranularStatusBuilder().
+	if !reflect.DeepEqual(feature.Status, NewFeatureStatusBuilder().AddGranularStatus(
+		NewGranularStatusBuilder().
 			Code("IMPLEMENTED").
 			Category("Spec").
 			Description("extra description").

@@ -55,7 +55,7 @@ func (rb *responseBuilder) Build() *Response {
 	}
 }
 
-// newResponseBuilder returns a newly allocated Response Builder
-func newResponseBuilder() ResponseBuilder {
+// NewResponseBuilder returns a newly allocated Response Builder
+func NewResponseBuilder() ResponseBuilder {
 	return &responseBuilder{}
 }

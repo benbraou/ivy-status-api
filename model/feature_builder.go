@@ -33,7 +33,7 @@ func (fb *featureBuilder) Build() *Feature {
 	}
 }
 
-func newFeatureBuilder() FeatureBuilder {
+func NewFeatureBuilder() FeatureBuilder {
 	return &featureBuilder{}
 }
 
@@ -71,7 +71,7 @@ func (fb *featureStatusBuilder) Build() *FeatureStatus {
 	}
 }
 
-func newFeatureStatusBuilder() FeatureStatusBuilder {
+func NewFeatureStatusBuilder() FeatureStatusBuilder {
 	return &featureStatusBuilder{}
 }
 
@@ -112,6 +112,6 @@ func (gb *granularStatusBuilder) Build() *GranularStatus {
 	}
 }
 
-func newGranularStatusBuilder() GranularStatusBuilder {
+func NewGranularStatusBuilder() GranularStatusBuilder {
 	return &granularStatusBuilder{}
 }

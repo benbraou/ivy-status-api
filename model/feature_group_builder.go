@@ -40,6 +40,6 @@ func (fb *featureGroupBuilder) Build() *FeatureGroup {
 }
 
 // newFeatureGroupBuilder returns a newly allocated Response Builder
-func newFeatureGroupBuilder() FeatureGroupBuilder {
+func NewFeatureGroupBuilder() FeatureGroupBuilder {
 	return &featureGroupBuilder{}
 }

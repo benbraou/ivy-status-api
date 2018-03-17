@@ -11,7 +11,7 @@ import (
 )
 
 func TestResponseBuilder(t *testing.T) {
-	builder := newResponseBuilder()
+	builder := NewResponseBuilder()
 	response := builder.
 		Version(1.1).
 		AddError(&Error{Code: "some code", Detail: "some detail"}).
