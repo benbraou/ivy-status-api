@@ -6,14 +6,11 @@ package model
 
 // Response struct is used for all HTTP responses
 type Response struct {
-	API    *API     `json:"API"`
-	Errors []*Error `json:"errors"`
-	Data   `json:"data"`
+	API    *API              `json:"API"`
+	Errors []*Error          `json:"errors"`
+	Data   interface{}       `json:"data"`
 	Links  map[string]string `json:"links"`
 }
-
-// Data corresponds to the successful content
-type Data interface{}
 
 // Error element
 type Error struct {
