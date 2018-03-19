@@ -12,16 +12,17 @@ import (
 
 func TestResponseBuilder(t *testing.T) {
 	builder := NewResponseBuilder()
+	content := struct {
+		short string
+		full  string
+	}{
+		short: "Golang is cool",
+		full:  "Golang is really cool!",
+	}
 	response := builder.
 		Version(1.1).
 		AddError(&Error{Code: "some code", Detail: "some detail"}).
-		Data(struct {
-			short string
-			full  string
-		}{
-			short: "Golang is cool",
-			full:  "Golang is really cool!",
-		}).
+		Data(&content).
 		Build()
 
 	// Check api version
@@ -37,7 +38,7 @@ func TestResponseBuilder(t *testing.T) {
 	}
 
 	// Check Data
-	if !reflect.DeepEqual(response.Data, struct {
+	if !reflect.DeepEqual(response.Data, &struct {
 		short string
 		full  string
 	}{
