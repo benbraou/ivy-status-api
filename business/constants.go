@@ -7,5 +7,5 @@ package business
 const (
 	CROSS = "\u274C"
 	CHECK = "\u2705"
-	NA    = "n/a "
+	NA    = "n/a"
 )
