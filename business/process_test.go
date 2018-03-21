@@ -5,6 +5,7 @@ package business
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -20,18 +21,24 @@ func checkError(err error) {
 
 // Assertions will look better with testify (https://github.com/benbraou/ivy-status-api/issues/1)
 func TestProduceFeatureGroups(t *testing.T) {
+	testProduceFeatureGroupsUsingMockDate(t, "03_18_2018")
+	testProduceFeatureGroupsUsingMockDate(t, "03_21_2018")
+}
+
+func testProduceFeatureGroupsUsingMockDate(t *testing.T, mockDate string) {
 	pwd, _ := os.Getwd()
 
-	markdown, err := ioutil.ReadFile(pwd + "/../mocks/status_03_18_2018.md")
+	markdown, err := ioutil.ReadFile(fmt.Sprintf("%s/../mocks/status_%s.md", pwd, mockDate))
 	checkError(err)
 
 	var expectedFeatureGroups []*model.FeatureGroup
 	var expectedBytes []byte
-	expectedBytes, err = ioutil.ReadFile(pwd + "/../mocks/feature_groups_03_18_2018.json")
+
+	expectedBytes, err = ioutil.ReadFile(
+		fmt.Sprintf("%s/../mocks/feature_groups_%s.json", pwd, mockDate),
+	)
 	checkError(err)
-
 	json.Unmarshal(expectedBytes, &expectedFeatureGroups)
-
 	producedFeatureGroups := ProduceFeatureGroups(string(markdown))
 
 	if len(producedFeatureGroups) != len(expectedFeatureGroups) {
