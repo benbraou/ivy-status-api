@@ -5,7 +5,10 @@
 package business
 
 const (
+	// CROSS = ✅
 	CROSS = "\u274C"
+	// CHECK = ❌
 	CHECK = "\u2705"
-	NA    = "n/a"
+	// NA    = "n/a"
+	NA = "n/a"
 )
