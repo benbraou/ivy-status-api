@@ -52,6 +52,10 @@ func (s *Stack) Empty() bool {
 	return s.top == nil
 }
 
+func NewStack() *Stack {
+	return &Stack{}
+}
+
 type StackNode struct {
 	data interface{}
 	next *StackNode
