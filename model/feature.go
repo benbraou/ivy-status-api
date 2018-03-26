@@ -4,11 +4,40 @@
 
 package model
 
-// FeatureGroup groups related features together (e.g. Angular Annotations consists of @Component,
-// @Directive, @Pipe, @Injectable...)
-type FeatureGroup struct {
+// FeatureGroupData holds information about:
+// 1. the feature group name e.g. Angular Annotations
+// 2. the related features e.g. (@Component, @Directive, @Pipe, @Injectable...)
+type FeatureGroupData struct {
 	Name     string     `json:"name"`
 	Features []*Feature `json:"features"`
+}
+
+// FeatureGroup can hold child feature groups. It is in reality a tree. e.g.
+//                 [Implementation Status]
+//                          / \
+//                         /   \
+//                        /     \
+//                       /       \
+//     [`@angular/compiler-cli`  [`@angular/compiler` changes]
+//                changes]
+//                  /
+//                 /
+//   [`ngtsc` TSC compiler transformer]
+// Internally, nested feature groups will be stored in a Stack data structure. Before sending the
+// response to the client, a slice of feature groups will be created based on this Stack
+// Why child feature groups is handled by a stack ? Let's look at this example:
+//
+// H1 AAA
+// H2 BBB
+// H2 CCC
+// H3 DDD
+// The children of H1 (BBB and CCC) are stored in a Stack
+// When we encounter H3 DDD, we need to nest it to the parent H2 CCC and not H2 BBB. Easy, we just
+// peek to the top of H1 children Stack. It's H2 CCC: the last H2 added
+type FeatureGroup struct {
+	Data          *FeatureGroupData `json:"data"`
+	childrenStack *Stack
+	FeatureGroups []*FeatureGroup `json:"featureGroups"`
 }
 
 // Feature describes a granular Angular feature (e.g. creation reordering based on injection)

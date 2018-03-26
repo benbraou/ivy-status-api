@@ -34,8 +34,10 @@ func (fb *featureGroupBuilder) AddFeature(feature *Feature) FeatureGroupBuilder 
 
 func (fb *featureGroupBuilder) Build() *FeatureGroup {
 	return &FeatureGroup{
-		Name:     fb.GroupName,
-		Features: fb.GroupFeatures,
+		Data: &FeatureGroupData{
+			Name:     fb.GroupName,
+			Features: fb.GroupFeatures,
+		},
 	}
 }
 
