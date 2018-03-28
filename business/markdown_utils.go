@@ -7,6 +7,7 @@ package business
 import (
 	"errors"
 	"regexp"
+	"strings"
 )
 
 // MaxHeaderLevel corresponds to greatest valid markdown header level.
@@ -41,4 +42,29 @@ func IsLineHeader(line string) bool {
 	return regexp.
 		MustCompile(`^\s*#`).
 		MatchString(line)
+}
+
+// IsLineSeperator considers a line as a separator if it does not contain any word character
+func IsLineSeperator(line string) bool {
+	return !regexp.
+		MustCompile(`\w`).
+		MatchString(line)
+}
+
+// Lines returns a slice of meaningful lines present in the markdown file content
+func Lines(markdownContent string) []string {
+	lines := make([]string, 0)
+	for _, line := range strings.Split(markdownContent, "\n") {
+		if !IsLineSeperator(line) {
+			lines = append(lines, UsefulContent(line))
+		}
+	}
+	return lines
+}
+
+// UsefulContent removes prefixes and trailing whitespaces and only keep  the useful information
+func UsefulContent(line string) string {
+	// e.g. "  -  Sanitization    " => "Sanitization"
+	r := regexp.MustCompile(`^\s*-?\s*|\s*$`)
+	return r.ReplaceAllString(line, "")
 }
