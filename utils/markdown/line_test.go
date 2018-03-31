@@ -24,3 +24,8 @@ func TestPrepareLine(t *testing.T) {
 	prepareLine(&line)
 	assert.Equal(t, "I am a line", line)
 }
+
+func TestIsCategoryHeaderLine(t *testing.T) {
+	assert.True(t, IsCategoryHeaderLine("abc | def | ghi"))
+	assert.False(t, IsCategoryHeaderLine(" - ❌ `@Directive`"))
+}

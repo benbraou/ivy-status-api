@@ -34,3 +34,9 @@ func prepareLine(line *string) {
 	r := regexp.MustCompile(`^\s*-?\s*|\s*$`)
 	*line = r.ReplaceAllString(*line, "")
 }
+
+// IsCategoryHeaderLine returns whether the given line corresponds to feature status categories
+// e.g | Feature  | Runtime | Spec     | Compiler |
+func IsCategoryHeaderLine(line string) bool {
+	return !IsFeatureStatusLine(line) && regexp.MustCompile(`\|\s*.+\s*\|`).MatchString(line)
+}
