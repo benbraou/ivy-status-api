@@ -20,14 +20,24 @@ func ProduceIvyStatus(content string) *model.FeatureGroup {
 func process(content string, root *model.FeatureGroup) {
 	lines := markdown.Lines(content)
 
+	// Add a fake line
+	lines = append(lines, "")
+
 	currentFeatureGroup := root
 	currentFeatures := make([]*model.Feature, 0)
 	currentCategories := make([]string, 0)
 
-	for _, line := range lines {
+	for lineIndex, line := range lines {
 		isHeader := markdown.IsLineHeader(line)
 		hasFeatureStatusInfo := markdown.IsFeatureStatusLine(line)
 		hasCategoriesInfo := markdown.IsCategoryHeaderLine(line)
+
+		// At this point, we are parsing the fake empty line that we have added.
+		// Append the features that we have built to the current feature group, and
+		if lineIndex == len(lines)-1 {
+			currentFeatureGroup.Data.Features = currentFeatures
+			break
+		}
 
 		if isHeader {
 			// Before switching to the new feature group, we need to attach all the features that we
@@ -114,11 +124,14 @@ func process(content string, root *model.FeatureGroup) {
 }
 
 func postprocess(root *model.FeatureGroup) {
+
 	for !root.ChildrenStack.Empty() {
 		top, _ := root.ChildrenStack.Pop()
 		topFg := top.(*model.FeatureGroup)
-		root.FeatureGroups = append(root.FeatureGroups, topFg)
-		postprocess(topFg)
+		if !root.ChildrenStack.Empty() || len(root.Data.Features) > 0 {
+			root.FeatureGroups = append(root.FeatureGroups, topFg)
+			postprocess(topFg)
+		}
 	}
 	for i := len(root.FeatureGroups)/2 - 1; i >= 0; i-- {
 		opp := len(root.FeatureGroups) - 1 - i
