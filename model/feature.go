@@ -4,6 +4,8 @@
 
 package model
 
+import "github.com/benbraou/ivy-status-api/constants"
+
 // FeatureGroupData holds information about:
 // 1. the feature group name e.g. Angular Annotations
 // 2. the related features e.g. (@Component, @Directive, @Pipe, @Injectable...)
@@ -36,8 +38,16 @@ type FeatureGroupData struct {
 // peek to the top of H1 children Stack. It's H2 CCC: the last H2 added
 type FeatureGroup struct {
 	Data          *FeatureGroupData `json:"data"`
-	childrenStack *Stack
-	FeatureGroups []*FeatureGroup `json:"featureGroups"`
+	ChildrenStack *Stack            `json:"-"`
+	FeatureGroups []*FeatureGroup   `json:"featureGroups"`
+}
+
+func NewRootFeatureGroup() *FeatureGroup {
+	return &FeatureGroup{
+		ChildrenStack: NewStack(),
+
+		Data: &FeatureGroupData{Name: constants.RootFeatureGroupName},
+	}
 }
 
 // Feature describes a granular Angular feature (e.g. creation reordering based on injection)
