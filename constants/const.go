@@ -14,4 +14,6 @@ const (
 	// RootFeatureGroupName is the name of the root feature group that will contain all feature groups
 	// defined in Angular `STATUS.md`
 	RootFeatureGroupName = "root"
+	// MarkdownStatusURL provides the URL to get the `STATUS.md` containing infomation about ivy status
+	MarkdownStatusURL = "https://raw.githubusercontent.com/angular/angular/master/packages/core/src/render3/STATUS.md"
 )
