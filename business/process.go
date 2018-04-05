@@ -128,7 +128,7 @@ func postprocess(root *model.FeatureGroup) {
 	for !root.ChildrenStack.Empty() {
 		top, _ := root.ChildrenStack.Pop()
 		topFg := top.(*model.FeatureGroup)
-		if !root.ChildrenStack.Empty() || len(root.Data.Features) > 0 {
+		if !topFg.ChildrenStack.Empty() || len(topFg.Data.Features) > 0 {
 			root.FeatureGroups = append(root.FeatureGroups, topFg)
 			postprocess(topFg)
 		}
