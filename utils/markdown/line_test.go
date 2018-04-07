@@ -15,13 +15,21 @@ func TestIsLineSeperator(t *testing.T) {
 	assert.False(t, IsLineSeperator("-------test-----"))
 }
 
-func TestLines(t *testing.T) {
-	assert.Equal(t, []string{"abc", "def", "ghi"}, Lines("abc     \ndef\nghi"))
+func TestRawLines(t *testing.T) {
+	assert.Equal(t, []string{"abc     ", "def", "ghi"}, RawLines("abc     \ndef\nghi"))
 }
 
 func TestPrepareLine(t *testing.T) {
 	line := "   I am a line     "
-	prepareLine(&line)
+	PrepareLine(&line)
+	assert.Equal(t, "I am a line", line)
+
+	line = "  - I am a line     "
+	PrepareLine(&line)
+	assert.Equal(t, "I am a line", line)
+
+	line = "  * I am a line     "
+	PrepareLine(&line)
 	assert.Equal(t, "I am a line", line)
 }
 

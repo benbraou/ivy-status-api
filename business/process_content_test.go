@@ -83,6 +83,7 @@ func testProduceFeatureGroupsUsingMockDate(t *testing.T, mockDate string) {
 	checkError(err)
 	json.Unmarshal(expectedBytes, &expectedIvyStatus)
 	ivyStatus := ProduceIvyStatus(string(markdown))
+
 	compareFeatureGroups(t, ivyStatus, expectedIvyStatus)
 }
 

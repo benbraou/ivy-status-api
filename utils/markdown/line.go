@@ -16,22 +16,21 @@ func IsLineSeperator(line string) bool {
 		MatchString(line)
 }
 
-// Lines returns a slice of meaningful lines present in the markdown file content
-func Lines(markdownContent string) []string {
+// RawLines returns the lines tha are present in the markdown file content (except separator lines)
+func RawLines(markdownContent string) []string {
 	lines := make([]string, 0)
 	for _, line := range strings.Split(markdownContent, "\n") {
 		if !IsLineSeperator(line) {
-			prepareLine(&line)
 			lines = append(lines, line)
 		}
 	}
 	return lines
 }
 
-// prepareLine removes prefixes and trailing whitespaces and only keep the useful information
-func prepareLine(line *string) {
+// PrepareLine removes prefixes and trailing whitespaces and only keep the useful information
+func PrepareLine(line *string) {
 	// e.g. "  -  Sanitization    " => "Sanitization"
-	r := regexp.MustCompile(`^\s*-?\s*|\s*$`)
+	r := regexp.MustCompile(`^\s*(-|\*)?\s*|\s*$`)
 	*line = r.ReplaceAllString(*line, "")
 }
 

@@ -52,8 +52,9 @@ func NewRootFeatureGroup() *FeatureGroup {
 
 // Feature describes a granular Angular feature (e.g. creation reordering based on injection)
 type Feature struct {
-	Name   string         `json:"name"`
-	Status *FeatureStatus `json:"status"`
+	Name          string         `json:"name"`
+	Status        *FeatureStatus `json:"status"`
+	ChildFeatures []*Feature     `json:"childFeatures"`
 }
 
 // FeatureStatus describes the status of a feature in regarding to the criteria: runtime, spec,
