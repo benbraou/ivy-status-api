@@ -63,7 +63,6 @@ func checkError(err error) {
 	}
 }
 
-// Assertions will look better with testify (https://github.com/benbraou/ivy-status-api/issues/1)
 func TestProduceFeatureGroups(t *testing.T) {
 	testProduceFeatureGroupsUsingMockDate(t, "04_01_2018")
 }

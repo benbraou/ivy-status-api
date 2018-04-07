@@ -5,8 +5,9 @@
 package model
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStack(t *testing.T) {
@@ -15,9 +16,8 @@ func TestStack(t *testing.T) {
 	assertEmpty(true, s, t)
 
 	_, err := s.Pop()
-	if err == nil {
-		t.Error("Expected empty Stack to return an error when Pop is called, but it did not")
-	}
+
+	assert.NotNilf(t, err, "Expected empty Stack to return an error when Pop is called, but it did not")
 
 	s.Push(10)
 
@@ -33,9 +33,7 @@ func TestStack(t *testing.T) {
 }
 
 func assertTopValue(top interface{}, value int, t *testing.T) {
-	if top != value {
-		t.Error(fmt.Sprintf("Expected the top stack element to be %d, but it was %d", value, top))
-	}
+	assert.Equalf(t, value, top, "Expected the top stack element to be %d, but it was %d", value, top)
 }
 
 func assertEmpty(empty bool, s *Stack, t *testing.T) {
@@ -43,7 +41,5 @@ func assertEmpty(empty bool, s *Stack, t *testing.T) {
 	if !empty {
 		msg = "Expected the stack not to be empty but it was"
 	}
-	if s.Empty() != empty {
-		t.Error(msg)
-	}
+	assert.Equalf(t, empty, s.Empty(), msg)
 }

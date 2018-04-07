@@ -6,8 +6,9 @@ package model
 
 import (
 	"math/big"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestResponseBuilder(t *testing.T) {
@@ -26,25 +27,18 @@ func TestResponseBuilder(t *testing.T) {
 		Build()
 
 	// Check api version
-	apiVersion := big.NewFloat(response.API.Version)
-	if apiVersion.Cmp(big.NewFloat(1.1)) != 0 {
-		t.Error("Expected version 1.1, got ", apiVersion)
-	}
+	assert.Equal(t, big.NewFloat(1.1), big.NewFloat(response.API.Version))
 
 	// Check errors
-	if !reflect.DeepEqual(response.Errors,
-		[]*Error{&Error{Code: "some code", Detail: "some detail"}}) {
-		t.Error("Expected  errors to be correctly build")
-	}
+	assert.Equal(t, []*Error{&Error{Code: "some code", Detail: "some detail"}}, response.Errors)
 
 	// Check Data
-	if !reflect.DeepEqual(response.Data, &struct {
+	assert.Equal(t, &struct {
 		short string
 		full  string
 	}{
 		short: "Golang is cool",
 		full:  "Golang is really cool!",
-	}) {
-		t.Error("Expected  data to be correctly set")
-	}
+	}, response.Data)
+
 }

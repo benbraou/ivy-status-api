@@ -5,8 +5,9 @@
 package model
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // GranularStatusBuilder tests
@@ -18,17 +19,9 @@ func TestGranularStatusBuilder(t *testing.T) {
 		Description("extra description").
 		Build()
 
-	if status.Code != "IMPLEMENTED" {
-		t.Error("Expected code: IMPLEMENTED, got ", status.Code)
-	}
-
-	if status.Category != "Spec" {
-		t.Error("Expected category: Spec, got ", status.Category)
-	}
-
-	if status.Description != "extra description" {
-		t.Error("Expected description: extra description, got ", status.Description)
-	}
+	assert.Equal(t, "IMPLEMENTED", status.Code)
+	assert.Equal(t, "Spec", status.Category)
+	assert.Equal(t, "extra description", status.Description)
 }
 
 // FeatureStatusBuilder tests
@@ -44,22 +37,13 @@ func TestFeatureStatusBuilderNotCompleteFeature(t *testing.T) {
 		).
 		Build()
 
-	if featureStatus.Completed == true {
-		t.Error("Expected feature status to be not completed")
-	}
-
-	if len(featureStatus.GranularStatuses) != 1 {
-		t.Error("Expected feature status to have 1 granular status, got ",
-			len(featureStatus.GranularStatuses))
-	}
-
-	if !reflect.DeepEqual(featureStatus.GranularStatuses[0], NewGranularStatusBuilder().
+	assert.False(t, featureStatus.Completed)
+	assert.Equal(t, 1, len(featureStatus.GranularStatuses))
+	assert.Equal(t, NewGranularStatusBuilder().
 		Code("NOT_IMPLEMENTED").
 		Category("Spec").
 		Description("extra description").
-		Build()) {
-		t.Error("Feature status does not contain correct granular status")
-	}
+		Build(), featureStatus.GranularStatuses[0])
 }
 
 func TestFeatureStatusBuilderCompleteFeature(t *testing.T) {
@@ -81,14 +65,8 @@ func TestFeatureStatusBuilderCompleteFeature(t *testing.T) {
 		).
 		Build()
 
-	if featureStatus.Completed == false {
-		t.Error("Expected feature status to be completed")
-	}
-
-	if len(featureStatus.GranularStatuses) != 2 {
-		t.Error("Expected feature status to have 2 granular status, got ",
-			len(featureStatus.GranularStatuses))
-	}
+	assert.True(t, featureStatus.Completed)
+	assert.Equal(t, 2, len(featureStatus.GranularStatuses))
 }
 
 // FeatureBuilder tests
@@ -106,17 +84,13 @@ func TestFeatureBuilder(t *testing.T) {
 			).Build()).
 		Build()
 
-	if feature.Name != "defineDirective()" {
-		t.Error("Expected feature name: defineDirective(), got ", feature.Name)
-	}
+	assert.Equal(t, "defineDirective()", feature.Name)
 
-	if !reflect.DeepEqual(feature.Status, NewFeatureStatusBuilder().AddGranularStatus(
+	assert.Equal(t, NewFeatureStatusBuilder().AddGranularStatus(
 		NewGranularStatusBuilder().
 			Code("IMPLEMENTED").
 			Category("Spec").
 			Description("extra description").
 			Build(),
-	).Build()) {
-		t.Error("Feature does not contain the correct status")
-	}
+	).Build(), feature.Status)
 }
