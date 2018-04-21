@@ -63,14 +63,15 @@ func populateTableRowFeature(
 		if i == 0 {
 			featureBuilder.Name(status)
 		} else {
-			icon, cat := markdown.GranularStatusIconAndDescription(status)
-			if len(cat) == 0 {
-				cat = (*categories)[i]
+			icon, desc := markdown.GranularStatusIconAndDescription(status)
+			if len(desc) == 0 {
+				desc = (*categories)[i]
 			}
 			featureStatusBuilder.AddGranularStatus(
 				model.NewGranularStatusBuilder().
 					Code(markdown.IconToStatusCode(icon)).
-					Category(cat).
+					Category((*categories)[i]).
+					Description(desc).
 					Build(),
 			)
 		}
