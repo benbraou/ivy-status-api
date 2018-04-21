@@ -39,16 +39,23 @@ func NewFeatureBuilder() FeatureBuilder {
 
 type FeatureStatusBuilder interface {
 	GranularStatuses(granularStatuses []*GranularStatus) FeatureStatusBuilder
+	Categories(Categories []string) FeatureStatusBuilder
 	AddGranularStatus(granularStatus *GranularStatus) FeatureStatusBuilder
 	Build() *FeatureStatus
 }
 
 type featureStatusBuilder struct {
 	FeatureGranularStatuses []*GranularStatus
+	FeatureStatusCategories []string
 }
 
 func (fb *featureStatusBuilder) GranularStatuses(granularStatuses []*GranularStatus) FeatureStatusBuilder {
 	fb.FeatureGranularStatuses = granularStatuses
+	return fb
+}
+
+func (fb *featureStatusBuilder) Categories(categories []string) FeatureStatusBuilder {
+	fb.FeatureStatusCategories = categories
 	return fb
 }
 
@@ -67,6 +74,7 @@ func (fb *featureStatusBuilder) Build() *FeatureStatus {
 	}
 	return &FeatureStatus{
 		Completed:        featureCompleted,
+		Categories:       fb.FeatureStatusCategories,
 		GranularStatuses: fb.FeatureGranularStatuses,
 	}
 }

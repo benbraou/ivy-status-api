@@ -53,7 +53,6 @@ func populateTableRowFeature(
 	line *string,
 	features *[]*model.Feature,
 	categories *[]string) {
-
 	markdown.PrepareLine(line)
 	// We have several statuses. Each status is attached to one category
 	featureBuilder := model.NewFeatureBuilder()
@@ -76,6 +75,10 @@ func populateTableRowFeature(
 			)
 		}
 	}
-	featureBuilder.Status(featureStatusBuilder.Build())
+	featureBuilder.Status(
+		featureStatusBuilder.
+			Categories(*categories).
+			Build(),
+	)
 	*features = append(*features, featureBuilder.Build())
 }

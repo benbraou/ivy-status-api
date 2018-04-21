@@ -61,6 +61,7 @@ type Feature struct {
 // compiler
 type FeatureStatus struct {
 	Completed        bool              `json:"completed"`
+	Categories       []string          `json:"categories"`
 	GranularStatuses []*GranularStatus `json:"granularStatuses"`
 }
 

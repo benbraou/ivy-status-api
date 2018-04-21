@@ -121,6 +121,7 @@ func compareStatuses(
 	t *testing.T,
 	status *model.FeatureStatus,
 	expectedStatus *model.FeatureStatus) {
+	assert.Equal(t, status.Categories, expectedStatus.Categories)
 	assert.Equal(t, status.Completed, expectedStatus.Completed)
 	assert.Equal(t, status.GranularStatuses, expectedStatus.GranularStatuses)
 }

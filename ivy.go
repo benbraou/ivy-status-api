@@ -82,5 +82,5 @@ func emptyResponse() *model.Response {
 // shouldUpdateStatus indicates when the ivy status need to be `refreshed`.
 // For the moment, the update is done every 10 min
 func shouldUpdateStatus(lastUpdateTime time.Time) bool {
-	return time.Since(lastUpdateTime).Minutes() >= 10
+	return time.Since(lastUpdateTime).Hours() >= 9999999
 }
