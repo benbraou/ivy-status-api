@@ -17,6 +17,7 @@ import (
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/urlfetch"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,6 +29,14 @@ func init() {
 
 	lastUpdateTime := time.Now()
 	r := gin.New()
+
+	r.Use(cors.New(cors.Config{
+		AllowMethods:     []string{"GET"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowAllOrigins:  true,
+		AllowCredentials: true,
+	}))
 
 	r.GET("v1/status", func(c *gin.Context) {
 		mutex.RLock()
