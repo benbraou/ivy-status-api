@@ -111,5 +111,6 @@ Please feel free to open [an issue](https://github.com/benbraou/ivy-status-api/i
 Pull requests with the fix and a test are welcome.  
 To launch tests: `scripts.test.sh`  
 
-
-
+## License
+[MIT licensed](./LICENSE).  
+Copyright (c) 2018 Oussama Ben Brahim
