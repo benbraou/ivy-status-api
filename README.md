@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/benbraou/ivy-status-api.svg?branch=main)](https://travis-ci.org/benbraou/ivy-status-api)
 # ivy-status-api
 https://ivy-status-api.appspot.com/v1/status
 
