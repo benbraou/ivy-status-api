@@ -28,6 +28,8 @@ func init() {
 	mutex := &sync.RWMutex{}
 
 	lastUpdateTime := time.Now()
+	initialStatusBuildDone := false
+
 	r := gin.New()
 
 	r.Use(cors.New(cors.Config{
@@ -40,7 +42,7 @@ func init() {
 
 	r.GET("v1/status", func(c *gin.Context) {
 		mutex.RLock()
-		ivyStatusNeedsRefresh := shouldUpdateStatus(lastUpdateTime)
+		ivyStatusNeedsRefresh := shouldUpdateStatus(lastUpdateTime, initialStatusBuildDone)
 		mutex.RUnlock()
 		if ivyStatusNeedsRefresh {
 			ctx := appengine.NewContext(c.Request)
@@ -57,6 +59,7 @@ func init() {
 					log.Println("Error encountered when reading Ivy markdown raw status body: ", err.Error())
 				} else {
 					mutex.Lock()
+					initialStatusBuildDone = true
 					lastUpdateTime = time.Now()
 					response = model.
 						NewResponseBuilder().
@@ -89,7 +92,7 @@ func emptyResponse() *model.Response {
 }
 
 // shouldUpdateStatus indicates when the ivy status need to be `refreshed`.
-// For the moment, the update is done every 5 min
-func shouldUpdateStatus(lastUpdateTime time.Time) bool {
-	return time.Since(lastUpdateTime).Minutes() >= 5
+// For the moment, the update is done when tha api is first served and then every 5 min
+func shouldUpdateStatus(lastUpdateTime time.Time, firstUpdateDone bool) bool {
+	return !firstUpdateDone || time.Since(lastUpdateTime).Minutes() >= 5
 }
